@@ -1,53 +1,102 @@
 import { React, useState } from "react";
-import { useEffect } from "react/cjs/react.development";
 import { bubbleSort } from "../algorithms/bubbleSort";
+import { selectionSort } from "../algorithms/selectionSort";
+import { Bar } from "./Bar";
 
 export const SortingVisualizer = () => {
-  const arr = [];
+  const array = [];
   for (let i = 0; i < 215; i++) {
-    arr.push(randomIntFromInterval(5, 550));
+    array.push(generateRandomNumber(5, 550));
   }
 
-  const [array, setArray] = useState([]);
+  const [state, setState] = useState({
+    array: array,
+    color: "green",
+    algorithm: "",
+    visible: false,
+  });
 
-  useEffect(() => {
-    setArray(arr);
-  }, []);
-
-  const resetArray = () => {
-    setArray(array);
+  const generateArray = () => {
     const newArr = [];
     for (let i = 0; i < 215; i++) {
-      newArr.push(randomIntFromInterval(5, 550));
+      newArr.push(generateRandomNumber(5, 550));
     }
-    setArray(newArr);
+    setState({
+      array: newArr,
+      color: "green",
+      algorithm: "",
+      visible: false,
+    });
+  };
+
+  const setAlgorithm = (event) => {
+    setState({ ...state, algorithm: event, visible: !state.visible });
+  };
+
+  const handleStart = (e) => {
+    if (state.algorithm === "") {
+      return;
+    }
+    let sortedArray = [];
+    if (state.algorithm === "bubbleSort") {
+      sortedArray = bubbleSort(state);
+      setState({ array: sortedArray.array, color: sortedArray.color });
+    }
+    if (state.algorithm === "selectionSort") {
+      sortedArray = selectionSort(state);
+      setState({ array: sortedArray.array, color: sortedArray.color });
+    }
   };
 
   return (
     <>
       <div className="absolute top-1/3 left-24">
-        {array.map((value, idx) => {
-          return (
-            <div
-              className=" w-1 bg-green-300 inline-block mt-0 mr-1"
-              key={idx}
-              style={{ height: `${value}px` }}
-            ></div>
-          );
+        {state.array.map((val, idx) => {
+          return <Bar color={state.color} value={val} key={idx} />;
         })}
-        <button onClick={resetArray} className="px-8 border bg-blue-300">
+        <button onClick={generateArray} className="px-8 border bg-blue-300">
           Generate New Array
         </button>
-        <button className="px-8 border bg-gray-300">Bubble Sort</button>
-        <button className="px-8 border bg-gray-300">Insertion Sort</button>
-        <button className="px-8 border bg-gray-300">Quick Sort</button>
-        <button className="px-8 border bg-gray-300">Merge Sort</button>
-        <button className="px-8 border bg-green-300">Visualize!</button>
+        <button
+          className="px-8 border bg-gray-300"
+          value="bubbleSort"
+          onClick={(event) => setAlgorithm(event.target.value)}
+        >
+          Bubble Sort
+        </button>
+        <button
+          className="px-8 border bg-gray-300"
+          value="selectionSort"
+          onClick={(event) => setAlgorithm(event.target.value)}
+        >
+          Selection Sort
+        </button>
+        <button
+          className="px-8 border bg-gray-300"
+          value="quickSort"
+          onClick={(event) => setAlgorithm(event.target.value)}
+        >
+          Quick Sort
+        </button>
+        <button
+          className="px-8 border bg-gray-300"
+          value="mergeSort"
+          onClick={(event) => setAlgorithm(event.target.value)}
+        >
+          Merge Sort
+        </button>
+        {state.visible === false ? (
+          <p></p>
+        ) : (
+          <button className="px-8 border bg-green-300" onClick={handleStart}>
+            Visualize!
+          </button>
+        )}
       </div>
     </>
   );
 };
 
-function randomIntFromInterval(min, max) {
+const generateRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};

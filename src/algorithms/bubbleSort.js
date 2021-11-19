@@ -1,12 +1,13 @@
-export const bubbleSort = (array) => {
-  for (let i = 0; i < array.length; i++) {
-    for (let j = 0; j < array.length - i - 1; j++) {
-      if (array[j] > array[j + 1]) {
-        let temp = array[j];
-        array[j] = array[j + 1];
-        array[j + 1] = temp;
+export const bubbleSort = (state) => {
+  for (let i = 0; i < state.array.length; i++) {
+    for (let j = 0; j < state.array.length - i - 1; j++) {
+      if (state.array[j] > state.array[j + 1]) {
+        let temp = state.array[j];
+        state.array[j] = state.array[j + 1];
+        state.array[j + 1] = temp;
       }
     }
   }
-  return array;
+  state.color = "blue";
+  return state;
 };
