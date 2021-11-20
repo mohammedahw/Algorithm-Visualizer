@@ -1,7 +1,9 @@
 import { React, useState } from "react";
-import { bubbleSort } from "../algorithms/bubbleSort";
-import { selectionSort } from "../algorithms/selectionSort";
 import { Bar } from "./Bar";
+import { bubbleSort } from "../algorithms/bubbleSort";
+import { getMergeSortAnimations } from "../algorithms/mergeSort";
+
+const COMPARE_COLOR = "#DF0303";
 
 export const SortingVisualizer = () => {
   const array = [];
@@ -11,9 +13,8 @@ export const SortingVisualizer = () => {
 
   const [state, setState] = useState({
     array: array,
-    color: "green",
+    color: "#2EFF00",
     algorithm: "",
-    visible: false,
   });
 
   const generateArray = () => {
@@ -23,36 +24,87 @@ export const SortingVisualizer = () => {
     }
     setState({
       array: newArr,
-      color: "green",
       algorithm: "",
-      visible: false,
+      color: "#2EEF00",
     });
   };
 
   const setAlgorithm = (event) => {
-    setState({ ...state, algorithm: event, visible: !state.visible });
+    setState({ ...state, algorithm: event });
   };
 
   const handleStart = (e) => {
     if (state.algorithm === "") {
       return;
     }
-    let sortedArray = [];
     if (state.algorithm === "bubbleSort") {
-      sortedArray = bubbleSort(state);
-      setState({ array: sortedArray.array, color: sortedArray.color });
+      handleBubbleSort();
     }
-    if (state.algorithm === "selectionSort") {
-      sortedArray = selectionSort(state);
-      setState({ array: sortedArray.array, color: sortedArray.color });
+    // if (state.algorithm === "selectionSort") {
+    //   sortedArray = selectionSort(array, state.color);
+    //   setState({ array: sortedArray[0], color: sortedArray[1] });
+    // }
+    if (state.algorithm === "mergeSort") {
+      handleMergeSort();
+    }
+  };
+
+  const handleBubbleSort = () => {
+    const animations = bubbleSort(state.array);
+    const arrayBars = document.getElementsByClassName("bar");
+    for (let i = 0; i < animations.length; i++) {
+      const [barOneIdx, barTwoIdx] = animations[i];
+      const barOneStyle = arrayBars[barOneIdx].style;
+      const barTwoStyle = arrayBars[barTwoIdx].style;
+      const color = COMPARE_COLOR;
+      setTimeout(() => {
+        barOneStyle.backgroundColor = color;
+        barTwoStyle.backgroundColor = color;
+        if (state.array[barOneIdx] > state.array[barTwoIdx]) {
+          setTimeout(() => {
+            barOneStyle.backgroundColor = `#FFFF00`;
+            barTwoStyle.backgroundColor = `#FFFF00`;
+            barOneStyle.height = `${state.array[barTwoIdx]}px`;
+            barTwoStyle.height = `${state.array[barOneIdx]}px`;
+          }, 1 * i);
+        }
+      }, i * 10);
+    }
+    setState({
+      ...state,
+      color: "blue",
+    });
+  };
+
+  const handleMergeSort = () => {
+    const animations = getMergeSortAnimations(state.array);
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName("bar");
+      const isColorChange = i % 3 !== 2;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 3 === 0 ? "red" : "blue";
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * 1);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * 1);
+      }
     }
   };
 
   return (
     <>
       <div className="absolute top-1/3 left-24">
-        {state.array.map((val, idx) => {
-          return <Bar color={state.color} value={val} key={idx} />;
+        {state.array.map((val, index) => {
+          return <Bar clas="bar" value={val} key={index} color={state.color} />;
         })}
         <button onClick={generateArray} className="px-8 border bg-blue-300">
           Generate New Array
@@ -85,7 +137,7 @@ export const SortingVisualizer = () => {
         >
           Merge Sort
         </button>
-        {state.visible === false ? (
+        {state.algorithm === "" ? (
           <p></p>
         ) : (
           <button className="px-8 border bg-green-300" onClick={handleStart}>
