@@ -1,91 +1,93 @@
-import { React, useState } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { Bar } from "./Bar";
 import { bubbleSort } from "../algorithms/bubbleSort";
 import { getMergeSortAnimations } from "../algorithms/mergeSort";
+import { selectionSort } from "../algorithms/selectionSort";
 
 const COMPARE_COLOR = "#DF0303";
 
 export const SortingVisualizer = () => {
-  const array = [];
+  const arr = [];
   for (let i = 0; i < 215; i++) {
-    array.push(generateRandomNumber(5, 550));
+    arr.push(generateRandomNumber(5, 550));
   }
 
-  const [state, setState] = useState({
-    array: array,
-    color: "#2EFF00",
-    algorithm: "",
-  });
+  const [array, setArray] = useState([]);
+  const [color, setColor] = useState("blue");
+  const [algorithm, setAlgorithm] = useState("");
+
+  useEffect(() => {
+    setArray(arr);
+  }, []);
+
+  const barRef = useRef(null);
 
   const generateArray = () => {
     const newArr = [];
     for (let i = 0; i < 215; i++) {
       newArr.push(generateRandomNumber(5, 550));
     }
-    setState({
-      array: newArr,
-      algorithm: "",
-      color: "#2EEF00",
-    });
+    setArray(newArr);
+    setColor("blue");
+    setAlgorithm("");
   };
 
-  const setAlgorithm = (event) => {
-    setState({ ...state, algorithm: event });
+  const handleAlgorithm = (event) => {
+    setAlgorithm(event);
   };
 
   const handleStart = (e) => {
-    if (state.algorithm === "") {
+    if (algorithm === "") {
       return;
     }
-    if (state.algorithm === "bubbleSort") {
+    if (algorithm === "bubbleSort") {
       handleBubbleSort();
     }
-    // if (state.algorithm === "selectionSort") {
-    //   sortedArray = selectionSort(array, state.color);
-    //   setState({ array: sortedArray[0], color: sortedArray[1] });
-    // }
-    if (state.algorithm === "mergeSort") {
+    if (algorithm === "selectionSort") {
+      handleSelectionSort();
+    }
+    if (algorithm === "mergeSort") {
       handleMergeSort();
+    }
+    if (algorithm === "quickSort") {
+      handleQuickSort();
     }
   };
 
   const handleBubbleSort = () => {
-    const animations = bubbleSort(state.array);
-    const arrayBars = document.getElementsByClassName("bar");
+    const animations = bubbleSort(array);
+    const arrayBars = barRef.current.children;
     for (let i = 0; i < animations.length; i++) {
       const [barOneIdx, barTwoIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
       const color = COMPARE_COLOR;
-      setTimeout(() => {
-        barOneStyle.backgroundColor = color;
-        barTwoStyle.backgroundColor = color;
-        if (state.array[barOneIdx] > state.array[barTwoIdx]) {
-          setTimeout(() => {
-            barOneStyle.backgroundColor = `#FFFF00`;
-            barTwoStyle.backgroundColor = `#FFFF00`;
-            barOneStyle.height = `${state.array[barTwoIdx]}px`;
-            barTwoStyle.height = `${state.array[barOneIdx]}px`;
-          }, 1 * i);
-        }
-      }, i * 10);
+      if (array[barOneIdx] > array[barTwoIdx]) {
+        setTimeout(() => {
+          barOneStyle.backgroundColor = `#FFFF00`;
+          barTwoStyle.backgroundColor = `#FFFF00`;
+          barOneStyle.height = `${array[barTwoIdx]}px`;
+          barTwoStyle.height = `${array[barOneIdx]}px`;
+        }, 1 * i);
+      } else {
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * 10);
+      }
     }
-    setState({
-      ...state,
-      color: "blue",
-    });
   };
 
   const handleMergeSort = () => {
-    const animations = getMergeSortAnimations(state.array);
+    const animations = getMergeSortAnimations(array);
     for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName("bar");
+      const arrayBars = barRef.current.children;
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
         const [barOneIdx, barTwoIdx] = animations[i];
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 3 === 0 ? "red" : "blue";
+        const color = i % 3 === 0 ? "red" : "green";
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
@@ -100,11 +102,20 @@ export const SortingVisualizer = () => {
     }
   };
 
+  const handleSelectionSort = () => {
+    let x = selectionSort(array);
+    setArray(x);
+  };
+
+  const handleQuickSort = () => {
+    return;
+  };
+
   return (
     <>
-      <div className="absolute top-1/3 left-24">
-        {state.array.map((val, index) => {
-          return <Bar clas="bar" value={val} key={index} color={state.color} />;
+      <div className="absolute top-1/3 left-24" ref={barRef}>
+        {array.map((val, index) => {
+          return <Bar value={val} key={index} color={color} />;
         })}
         <button onClick={generateArray} className="px-8 border bg-blue-300">
           Generate New Array
@@ -112,32 +123,32 @@ export const SortingVisualizer = () => {
         <button
           className="px-8 border bg-gray-300"
           value="bubbleSort"
-          onClick={(event) => setAlgorithm(event.target.value)}
+          onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Bubble Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
           value="selectionSort"
-          onClick={(event) => setAlgorithm(event.target.value)}
+          onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Selection Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
           value="quickSort"
-          onClick={(event) => setAlgorithm(event.target.value)}
+          onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Quick Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
           value="mergeSort"
-          onClick={(event) => setAlgorithm(event.target.value)}
+          onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Merge Sort
         </button>
-        {state.algorithm === "" ? (
+        {algorithm === "" ? (
           <p></p>
         ) : (
           <button className="px-8 border bg-green-300" onClick={handleStart}>
