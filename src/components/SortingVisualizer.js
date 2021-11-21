@@ -1,26 +1,25 @@
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useRef } from "react";
 import { Bar } from "./Bar";
 import { bubbleSort } from "../algorithms/bubbleSort";
-import { getMergeSortAnimations } from "../algorithms/mergeSort";
+import { mergeSort } from "../algorithms/mergeSort";
 import { selectionSort } from "../algorithms/selectionSort";
 
-const COMPARE_COLOR = "#DF0303";
+const generateRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+const arr = [];
+for (let i = 0; i < 215; i++) {
+  arr.push(generateRandomNumber(5, 550));
+}
+
+const COMPARE_COLOR = "green";
 
 export const SortingVisualizer = () => {
-  const arr = [];
-  for (let i = 0; i < 215; i++) {
-    arr.push(generateRandomNumber(5, 550));
-  }
-
-  const [array, setArray] = useState([]);
+  const [array, setArray] = useState(arr);
   const [color, setColor] = useState("blue");
   const [algorithm, setAlgorithm] = useState("");
-
-  useEffect(() => {
-    setArray(arr);
-  }, []);
-
-  const barRef = useRef(null);
+  const barsParent = useRef(null);
 
   const generateArray = () => {
     const newArr = [];
@@ -30,6 +29,11 @@ export const SortingVisualizer = () => {
     setArray(newArr);
     setColor("blue");
     setAlgorithm("");
+    for (let i = 0; i < barsParent.current.children.length; i++) {
+      if (barsParent.current.children[i].style.backgroundColor === "blue")
+        break;
+      barsParent.current.children[i].style.backgroundColor = "blue";
+    }
   };
 
   const handleAlgorithm = (event) => {
@@ -40,48 +44,49 @@ export const SortingVisualizer = () => {
     if (algorithm === "") {
       return;
     }
-    if (algorithm === "bubbleSort") {
+    if (algorithm === "Bubble Sort") {
       handleBubbleSort();
     }
-    if (algorithm === "selectionSort") {
+    if (algorithm === "Selection Sort") {
       handleSelectionSort();
     }
-    if (algorithm === "mergeSort") {
+    if (algorithm === "Merge Sort") {
       handleMergeSort();
     }
-    if (algorithm === "quickSort") {
+    if (algorithm === "Quick Sort") {
       handleQuickSort();
     }
   };
 
   const handleBubbleSort = () => {
     const animations = bubbleSort(array);
-    const arrayBars = barRef.current.children;
+    const arrayBars = barsParent.current.children;
+    const color = COMPARE_COLOR;
     for (let i = 0; i < animations.length; i++) {
       const [barOneIdx, barTwoIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
-      const color = COMPARE_COLOR;
-      if (array[barOneIdx] > array[barTwoIdx]) {
-        setTimeout(() => {
-          barOneStyle.backgroundColor = `#FFFF00`;
-          barTwoStyle.backgroundColor = `#FFFF00`;
-          barOneStyle.height = `${array[barTwoIdx]}px`;
-          barTwoStyle.height = `${array[barOneIdx]}px`;
-        }, 1 * i);
-      } else {
-        setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barTwoStyle.backgroundColor = color;
-        }, i * 10);
-      }
+
+      setTimeout(() => {
+        barOneStyle.backgroundColor = color;
+        barTwoStyle.backgroundColor = color;
+        if (
+          parseInt(arrayBars[barOneIdx].style.height) >
+          parseInt(arrayBars[barTwoIdx].style.height)
+        ) {
+          let temp = barOneStyle.height;
+          barOneStyle.height = barTwoStyle.height;
+          barTwoStyle.height = temp;
+          barOneStyle.backgroundColor = "yellow";
+        }
+      }, i * 3);
     }
   };
 
   const handleMergeSort = () => {
-    const animations = getMergeSortAnimations(array);
+    const animations = mergeSort(array);
+    const arrayBars = barsParent.current.children;
     for (let i = 0; i < animations.length; i++) {
-      const arrayBars = barRef.current.children;
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
         const [barOneIdx, barTwoIdx] = animations[i];
@@ -91,20 +96,20 @@ export const SortingVisualizer = () => {
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
-        }, i * 1);
+        }, i * 5);
       } else {
         setTimeout(() => {
           const [barOneIdx, newHeight] = animations[i];
           const barOneStyle = arrayBars[barOneIdx].style;
           barOneStyle.height = `${newHeight}px`;
-        }, i * 1);
+        }, i * 5);
       }
     }
   };
 
   const handleSelectionSort = () => {
-    let x = selectionSort(array);
-    setArray(x);
+    let soetedArray = selectionSort(array);
+    setArray(soetedArray);
   };
 
   const handleQuickSort = () => {
@@ -113,37 +118,39 @@ export const SortingVisualizer = () => {
 
   return (
     <>
-      <div className="absolute top-1/3 left-24" ref={barRef}>
-        {array.map((val, index) => {
-          return <Bar value={val} key={index} color={color} />;
-        })}
+      <div className="absolute top-1/3 left-24">
+        <div ref={barsParent}>
+          {array.map((val, index) => {
+            return <Bar value={val} key={index} color={color} />;
+          })}
+        </div>
         <button onClick={generateArray} className="px-8 border bg-blue-300">
           Generate New Array
         </button>
         <button
           className="px-8 border bg-gray-300"
-          value="bubbleSort"
+          value="Bubble Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Bubble Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
-          value="selectionSort"
+          value="Selection Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Selection Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
-          value="quickSort"
+          value="Quick Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Quick Sort
         </button>
         <button
           className="px-8 border bg-gray-300"
-          value="mergeSort"
+          value="Merge Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Merge Sort
@@ -152,14 +159,10 @@ export const SortingVisualizer = () => {
           <p></p>
         ) : (
           <button className="px-8 border bg-green-300" onClick={handleStart}>
-            Visualize!
+            Visualize {algorithm}!
           </button>
         )}
       </div>
     </>
   );
-};
-
-const generateRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 };

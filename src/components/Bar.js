@@ -1,17 +1,18 @@
 import React from "react";
-import { useState } from "react/cjs/react.development";
 
-export const Bar = ({ value, color, ref }) => {
-  const [col, setCol] = useState(color);
-
+export const Bar = ({ value, color }) => {
   let barStyle = {
-    background: col,
+    background: color,
     height: `${value}px`,
   };
 
   return (
     <>
-      <div className={` w-1 inline-block mt-0 mr-1`} style={barStyle}></div>
+      <div
+        value={value}
+        className={` w-1 inline-block mt-0 mr-1`}
+        style={barStyle}
+      ></div>
     </>
   );
 };
