@@ -108,22 +108,24 @@ export const SortingVisualizer = () => {
   };
 
   const handleSelectionSort = () => {
-    let soetedArray = selectionSort(array);
-    setArray(soetedArray);
+    const animations = selectionSort(array);
+    const arrayBars = barsParent.current.children;
+    for (let i = 0; i < animations.length; i++) {
+      let [barOneIdx, barTwoIdx] = animations[i];
+      setTimeout(() => {
+        let temp = arrayBars[barOneIdx].style.height;
+        arrayBars[barOneIdx].style.height = arrayBars[barTwoIdx].style.height;
+        arrayBars[barTwoIdx].style.height = temp;
+      }, i * 100);
+    }
   };
-
   const handleQuickSort = () => {
     return;
   };
 
   return (
     <>
-      <div className="absolute top-1/3 left-24">
-        <div ref={barsParent}>
-          {array.map((val, index) => {
-            return <Bar value={val} key={index} color={color} />;
-          })}
-        </div>
+      <nav>
         <button onClick={generateArray} className="px-8 border bg-blue-300">
           Generate New Array
         </button>
@@ -162,6 +164,13 @@ export const SortingVisualizer = () => {
             Visualize {algorithm}!
           </button>
         )}
+      </nav>
+      <div className="absolute top-1/3 left-24">
+        <div ref={barsParent}>
+          {array.map((val, index) => {
+            return <Bar value={val} key={index} color={color} />;
+          })}
+        </div>
       </div>
     </>
   );
