@@ -5,3 +5,7 @@
 body {
   background-color: #f6f9fc;
 }
+* {
+  margin: 0;
+  padding: 0;
+}

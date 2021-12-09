@@ -13,8 +13,6 @@ for (let i = 0; i < 215; i++) {
   arr.push(generateRandomNumber(5, 550));
 }
 
-const COMPARE_COLOR = "green";
-
 export const SortingVisualizer = () => {
   const [array, setArray] = useState(arr);
   const [color, setColor] = useState("blue");
@@ -40,36 +38,33 @@ export const SortingVisualizer = () => {
     setAlgorithm(event);
   };
 
-  const handleStart = (e) => {
-    if (algorithm === "") {
-      return;
-    }
-    if (algorithm === "Bubble Sort") {
-      handleBubbleSort();
-    }
-    if (algorithm === "Selection Sort") {
-      handleSelectionSort();
-    }
-    if (algorithm === "Merge Sort") {
-      handleMergeSort();
-    }
-    if (algorithm === "Quick Sort") {
-      handleQuickSort();
+  const handleStart = () => {
+    switch (algorithm) {
+      case "Bubble Sort":
+        handleBubbleSort();
+        break;
+      case "Selection Sort":
+        handleSelectionSort();
+        break;
+      case "Merge Sort":
+        handleMergeSort();
+        break;
+      case "Quick Sort":
+        handleQuickSort();
+        break;
+      default:
+        return;
     }
   };
 
   const handleBubbleSort = () => {
     const animations = bubbleSort(array);
     const arrayBars = barsParent.current.children;
-    const color = COMPARE_COLOR;
     for (let i = 0; i < animations.length; i++) {
       const [barOneIdx, barTwoIdx] = animations[i];
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
-
       setTimeout(() => {
-        barOneStyle.backgroundColor = color;
-        barTwoStyle.backgroundColor = color;
         if (
           parseInt(arrayBars[barOneIdx].style.height) >
           parseInt(arrayBars[barTwoIdx].style.height)
@@ -77,7 +72,7 @@ export const SortingVisualizer = () => {
           let temp = barOneStyle.height;
           barOneStyle.height = barTwoStyle.height;
           barTwoStyle.height = temp;
-          barOneStyle.backgroundColor = "yellow";
+          barTwoStyle.backgroundColor = "green";
         }
       }, i * 3);
     }
@@ -125,33 +120,36 @@ export const SortingVisualizer = () => {
 
   return (
     <>
-      <nav>
-        <button onClick={generateArray} className="px-8 border bg-blue-300">
+      <nav className="bg-gray-700 py-1">
+        <button
+          onClick={generateArray}
+          className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+        >
           Generate New Array
         </button>
         <button
-          className="px-8 border bg-gray-300"
+          className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700"
           value="Bubble Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Bubble Sort
         </button>
         <button
-          className="px-8 border bg-gray-300"
+          className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700"
           value="Selection Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Selection Sort
         </button>
         <button
-          className="px-8 border bg-gray-300"
+          className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700"
           value="Quick Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
           Quick Sort
         </button>
         <button
-          className="px-8 border bg-gray-300"
+          className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow-outline hover:bg-blue-700"
           value="Merge Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
@@ -160,7 +158,10 @@ export const SortingVisualizer = () => {
         {algorithm === "" ? (
           <p></p>
         ) : (
-          <button className="px-8 border bg-green-300" onClick={handleStart}>
+          <button
+            className="h-10 px-5 m-2 text-green-100 transition-colors duration-150 bg-green-600 rounded-lg focus:shadow-outline hover:bg-green-700"
+            onClick={handleStart}
+          >
             Visualize {algorithm}!
           </button>
         )}

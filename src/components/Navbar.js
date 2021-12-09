@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaReact } from "react-icons/fa";
+import { GiAtomicSlashes } from "react-icons/gi";
 
 export const Navbar = () => {
   return (
@@ -9,14 +9,12 @@ export const Navbar = () => {
         <div className="flex justify-between">
           <div className="flex items-center">
             <div>
-              <FaReact className="h-9 w-6 mr-2" />
+              <GiAtomicSlashes className="h-9 w-6 mr-2" />
             </div>
             <div>
-              <Link to="/">Home</Link>
+              <Link to="/">Algorithm Visualizer</Link>
             </div>
           </div>
-          <div className="flex items-center">Algorithm Visualizer</div>
-          <div></div>
         </div>
       </div>
     </nav>
