@@ -4,8 +4,8 @@ import { GiAtomicSlashes } from "react-icons/gi";
 
 export const Navbar = () => {
   return (
-    <nav className="bg-gray-800 text-blue-300">
-      <div className="px-8 mx-auto py-1">
+    <nav className="bg-gray-800 text-gray-100">
+      <div className="px-8 mx-auto py-2">
         <div className="flex justify-between">
           <div className="flex items-center">
             <div>

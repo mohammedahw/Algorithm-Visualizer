@@ -14,7 +14,7 @@ export const Home = () => {
         </div>
         <div className="px-8">
           <Page
-            name={"PathFinding Visualizer"}
+            name={"Path Finding Visualizer"}
             url={"pathfinding-visualizer"}
             img="https://static.thenounproject.com/png/3541888-200.png"
           />
