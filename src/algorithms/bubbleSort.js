@@ -1,4 +1,4 @@
-export const bubbleSort = (array) => {
+export default function bubbleSort(array){
   const animations = [];
   for (let i = 0; i < array.length; i++) {
     for (let j = 0; j < array.length - i - 1; j++) {

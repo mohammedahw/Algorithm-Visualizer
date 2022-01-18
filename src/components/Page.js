@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 export const Page = ({ name, url, img }) => {
   return (
-    <div className="flex">
+    <div className="flex justify-center items-center">
       <Link to={url}>
-        {name} <img className="h-60 w-60 m-auto" src={img} alt={img} />
+        <img className="h-60 w-60 m-auto" src={img} alt={img} /> {name}
       </Link>
     </div>
   );

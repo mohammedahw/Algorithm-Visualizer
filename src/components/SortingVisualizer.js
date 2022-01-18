@@ -1,7 +1,7 @@
 import { React, useState, useRef } from "react";
-import { bubbleSort } from "../algorithms/bubbleSort";
-import { mergeSort } from "../algorithms/mergeSort";
-import { selectionSort } from "../algorithms/selectionSort";
+import  bubbleSort  from "../algorithms/bubbleSort";
+import  mergeSort  from "../algorithms/mergeSort";
+import  selectionSort  from "../algorithms/selectionSort";
 
 const generateRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -14,28 +14,28 @@ for (let i = 0; i < 215; i++) {
 
 export const SortingVisualizer = () => {
   const [array, setArray] = useState(arr);
-  const [algorithm, setAlgorithm] = useState("");
-  const barsParent = useRef(null);
+  const [currentAlgorithm, setCurrentAlgorithm] = useState("");
+  const arrayBarsParentElement = useRef(null);
 
-  const generateArray = () => {
+  const generateNewArray = () => {
     const newArr = [];
     for (let i = 0; i < 215; i++) {
       newArr.push(generateRandomNumber(5, 550));
     }
     setArray(newArr);
-    setAlgorithm("");
-    for (let i = 0; i < barsParent.current.children.length; i++) {
-      barsParent.current.children[i].className =
+    setCurrentAlgorithm("");
+    for (let i = 0; i < arrayBarsParentElement.current.children.length; i++) {
+      arrayBarsParentElement.current.children[i].className =
         "w-1 inline-block mt-0 mr-1 bg-blue-800";
     }
   };
 
   const handleAlgorithm = (event) => {
-    setAlgorithm(event);
+    setCurrentAlgorithm(event);
   };
 
   const handleStart = () => {
-    switch (algorithm) {
+    switch (currentAlgorithm) {
       case "Bubble Sort":
         handleBubbleSort();
         break;
@@ -55,28 +55,26 @@ export const SortingVisualizer = () => {
 
   const handleBubbleSort = () => {
     const animations = bubbleSort(array);
-    const arrayBars = barsParent.current.children;
+    const arrayBars = arrayBarsParentElement.current.children;
     for (let i = 0; i < animations.length; i++) {
       const [barOneIdx, barTwoIdx] = animations[i];
       let barOne = arrayBars[barOneIdx];
       let barTwo = arrayBars[barTwoIdx];
-      let barOneHeight = barOne.style.height;
-      let barTwoHeight = barTwo.style.height;
       setTimeout(() => {
-        if (parseInt(barOneHeight) > parseInt(barTwoHeight)) {
-          let temp = barOneHeight;
-          barOneHeight = barTwoHeight;
-          barTwoHeight = temp;
+        if (parseInt(barOne.style.height) > parseInt(barTwo.style.height)) {
+          let temp = barOne.style.height;
+          barOne.style.height = barTwo.style.height;
+          barTwo.style.height = temp;
           barTwo.className = "w-1 inline-block mt-0 mr-1 bg-green-800";
           barOne.className = "w-1 inline-block mt-0 mr-1 bg-blue-800";
         }
-      }, i * 5);
+      }, i * 5)
+        }
     }
-  };
 
   const handleMergeSort = () => {
     const animations = mergeSort(array);
-    const arrayBars = barsParent.current.children;
+    const arrayBars = arrayBarsParentElement.current.children;
     for (let i = 0; i < animations.length; i++) {
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
@@ -100,7 +98,7 @@ export const SortingVisualizer = () => {
 
   const handleSelectionSort = () => {
     const animations = selectionSort(array);
-    const arrayBars = barsParent.current.children;
+    const arrayBars = arrayBarsParentElement.current.children;
     for (let i = 0; i < animations.length; i++) {
       let [barOneIdx, barTwoIdx] = animations[i];
       setTimeout(() => {
@@ -118,7 +116,7 @@ export const SortingVisualizer = () => {
     <>
       <nav className="bg-gray-700 py-1">
         <button
-          onClick={generateArray}
+          onClick={generateNewArray}
           className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow hover:bg-red-800"
         >
           Generate New Array
@@ -151,19 +149,19 @@ export const SortingVisualizer = () => {
         >
           Merge Sort
         </button>
-        {algorithm === "" ? (
+        {currentAlgorithm === "" ? (
           <p></p>
         ) : (
           <button
             className="h-10 px-5 m-2 text-green-100 transition-colors duration-150 bg-green-600 rounded-lg focus:shadow hover:bg-green-700"
             onClick={handleStart}
           >
-            Visualize {algorithm}!
+            Visualize {currentAlgorithm}!
           </button>
         )}
       </nav>
       <div className="absolute top-1/3 left-24">
-        <div ref={barsParent}>
+        <div ref={arrayBarsParentElement}>
           {array.map((val, index) => {
             return (
               <div

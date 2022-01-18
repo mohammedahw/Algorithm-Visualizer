@@ -11,7 +11,7 @@ export const Navbar = () => {
             <div>
               <GiAtomicSlashes className="h-9 w-6 mr-2" />
             </div>
-            <div>
+            <div className="font-bold">
               <Link to="/">Algorithm Visualizer</Link>
             </div>
           </div>

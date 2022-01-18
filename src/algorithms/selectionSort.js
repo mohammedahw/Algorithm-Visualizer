@@ -1,4 +1,4 @@
-export const selectionSort = (array) => {
+export default function selectionSort(array) {
   const animations = [];
   for (let i = 0; i < array.length; i++) {
     let min = i;
