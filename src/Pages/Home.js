@@ -1,7 +1,7 @@
 import React from "react";
-import { Page } from "../components/Page";
+import Page  from "../components/Page";
 
-export const Home = () => {
+export default function Home() {
   return (
     <>
       <div className="flex justify-center mx-auto my-20 items-center text-center font-bold">

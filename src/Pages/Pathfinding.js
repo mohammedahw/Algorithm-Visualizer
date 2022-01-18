@@ -1,5 +1,5 @@
 import React from "react";
 
-export const Pathfinding = () => {
+export default function Pathfinding() {
   return <div>PathFinding</div>;
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Page = ({ name, url, img }) => {
+export default function Page({ name, url, img }) {
   return (
     <div className="flex justify-center items-center">
       <Link to={url}>

@@ -1,6 +1,6 @@
 import React from "react";
-import { SortingVisualizer } from "../components/SortingVisualizer";
+import SortingVisualizer  from "../components/SortingVisualizer";
 
-export const Sorting = () => {
+export default function Sorting() {
   return <SortingVisualizer />;
 };

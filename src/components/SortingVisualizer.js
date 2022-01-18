@@ -1,7 +1,7 @@
 import { React, useState, useRef } from "react";
-import  bubbleSort  from "../algorithms/bubbleSort";
-import  mergeSort  from "../algorithms/mergeSort";
-import  selectionSort  from "../algorithms/selectionSort";
+import bubbleSort  from "../algorithms/bubbleSort";
+import mergeSort  from "../algorithms/mergeSort";
+import selectionSort  from "../algorithms/selectionSort";
 
 const generateRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -12,7 +12,7 @@ for (let i = 0; i < 215; i++) {
   arr.push(generateRandomNumber(5, 550));
 }
 
-export const SortingVisualizer = () => {
+export default function SortingVisualizer() {
   const [array, setArray] = useState(arr);
   const [currentAlgorithm, setCurrentAlgorithm] = useState("");
   const arrayBarsParentElement = useRef(null);
@@ -176,3 +176,5 @@ export const SortingVisualizer = () => {
     </>
   );
 };
+
+

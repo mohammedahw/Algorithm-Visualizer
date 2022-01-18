@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { GiAtomicSlashes } from "react-icons/gi";
 
-export const Navbar = () => {
+export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-gray-100">
       <div className="px-8 mx-auto py-2">
