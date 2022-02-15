@@ -1,14 +1,15 @@
-import { React, useState, useRef } from "react";
+import { React, useState, useRef, useEffect } from "react";
 import bubbleSort  from "../algorithms/bubbleSort";
 import mergeSort  from "../algorithms/mergeSort";
-import selectionSort  from "../algorithms/selectionSort";
+import insertionSort from "../algorithms/insertionSort";
+import handleResize from "../utils/handleResize";
 
 const generateRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 const arr = [];
-for (let i = 0; i < 215; i++) {
+for (let i = 0; i < handleResize(); i++) {
   arr.push(generateRandomNumber(5, 550));
 }
 
@@ -18,8 +19,9 @@ export default function SortingVisualizer() {
   const arrayBarsParentElementRef = useRef(null);
 
   const generateNewArray = () => {
+    const SCREENWIDTH = handleResize()
     const newArr = [];
-    for (let i = 0; i < 215; i++) {
+    for (let i = 0; i < SCREENWIDTH; i++) {
       newArr.push(generateRandomNumber(5, 550));
     }
     setArray(newArr);
@@ -29,6 +31,10 @@ export default function SortingVisualizer() {
         "w-1 inline-block mt-0 mr-1 bg-blue-800";
     }
   };
+
+  useEffect(()=> {
+    window.addEventListener("resize", generateNewArray)
+  },[])
 
   const handleAlgorithm = (event) => {
     setCurrentAlgorithm(event);
@@ -98,8 +104,16 @@ export default function SortingVisualizer() {
   };
 
   const handleInsertionSort = () => {
-    console.log(selectionSort(array) === array.sort((a, b) => {return a-b}))
-    console.log(currentAlgorithm)
+    const animations = insertionSort(array)
+    const arrayBars = arrayBarsParentElementRef.current.children
+    for (let i = 0; i < animations.length; i++) {
+      const [barOneIdx, barTwoIdx] = animations[i]
+      if (parseInt(arrayBars[barTwoIdx].style.height) > parseInt(arrayBars[barOneIdx].style.height)) {
+        let temp = arrayBars[barTwoIdx + 1].style.height
+        arrayBars[barTwoIdx + 1].style.height = arrayBars[barOneIdx].style.height
+        arrayBars[barOneIdx].style.height = temp
+      }
+    }
   };
 
   const handleQuickSort = () => {
@@ -154,7 +168,7 @@ export default function SortingVisualizer() {
           </button>
         )}
       </nav>
-      <div className="absolute top-1/3 left-24">
+      <div className="flex justify-center items-center h-screen">
         <div ref={arrayBarsParentElementRef}>
           {array.map((val, index) => {
             return (
