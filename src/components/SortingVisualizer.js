@@ -2,7 +2,7 @@ import { React, useState, useRef, useEffect } from "react";
 import bubbleSort  from "../algorithms/bubbleSort";
 import mergeSort  from "../algorithms/mergeSort";
 import insertionSort from "../algorithms/insertionSort";
-import getInitialArraySize from "../utils/getInitialArraySize";
+import { getInitialArraySize } from "../utils/getInitialArraySize";
 
 const generateRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -19,9 +19,8 @@ export default function SortingVisualizer() {
   const arrayBarsParentElementRef = useRef(null);
 
   const generateNewArray = () => {
-    const SCREENWIDTH = getInitialArraySize()
     const newArr = [];
-    for (let i = 0; i < SCREENWIDTH; i++) {
+    for (let i = 0; i < getInitialArraySize(); i++) {
       newArr.push(generateRandomNumber(5, 550));
     }
     setArray(newArr);
