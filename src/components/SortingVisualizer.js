@@ -15,7 +15,7 @@ for (let i = 0; i < 215; i++) {
 export default function SortingVisualizer() {
   const [array, setArray] = useState(arr);
   const [currentAlgorithm, setCurrentAlgorithm] = useState("");
-  const arrayBarsParentElement = useRef(null);
+  const arrayBarsParentElementRef = useRef(null);
 
   const generateNewArray = () => {
     const newArr = [];
@@ -24,8 +24,8 @@ export default function SortingVisualizer() {
     }
     setArray(newArr);
     setCurrentAlgorithm("");
-    for (let i = 0; i < arrayBarsParentElement.current.children.length; i++) {
-      arrayBarsParentElement.current.children[i].className =
+    for (let i = 0; i < arrayBarsParentElementRef.current.children.length; i++) {
+      arrayBarsParentElementRef.current.children[i].className =
         "w-1 inline-block mt-0 mr-1 bg-blue-800";
     }
   };
@@ -39,8 +39,8 @@ export default function SortingVisualizer() {
       case "Bubble Sort":
         handleBubbleSort();
         break;
-      case "Selection Sort":
-        handleSelectionSort();
+      case "Insertion Sort":
+        handleInsertionSort();
         break;
       case "Merge Sort":
         handleMergeSort();
@@ -55,7 +55,7 @@ export default function SortingVisualizer() {
 
   const handleBubbleSort = () => {
     const animations = bubbleSort(array);
-    const arrayBars = arrayBarsParentElement.current.children;
+    const arrayBars = arrayBarsParentElementRef.current.children;
     for (let i = 0; i < animations.length; i++) {
       const [barOneIdx, barTwoIdx] = animations[i];
       let barOne = arrayBars[barOneIdx];
@@ -65,16 +65,16 @@ export default function SortingVisualizer() {
           let temp = barOne.style.height;
           barOne.style.height = barTwo.style.height;
           barTwo.style.height = temp;
-          barTwo.className = "w-1 inline-block mt-0 mr-1 bg-green-800";
-          barOne.className = "w-1 inline-block mt-0 mr-1 bg-blue-800";
         }
-      }, i * 5)
-        }
+        barTwo.className = "w-1 inline-block mt-0 mr-1 bg-green-800";
+        barOne.className = "w-1 inline-block mt-0 mr-1 bg-blue-800";
+      }, i * 1)
     }
+  }
 
   const handleMergeSort = () => {
     const animations = mergeSort(array);
-    const arrayBars = arrayBarsParentElement.current.children;
+    const arrayBars = arrayBarsParentElementRef.current.children;
     for (let i = 0; i < animations.length; i++) {
       const isColorChange = i % 3 !== 2;
       if (isColorChange) {
@@ -94,23 +94,17 @@ export default function SortingVisualizer() {
         }, i * 3);
       }
     }
+
   };
 
-  const handleSelectionSort = () => {
-    const animations = selectionSort(array);
-    const arrayBars = arrayBarsParentElement.current.children;
-    for (let i = 0; i < animations.length; i++) {
-      let [barOneIdx, barTwoIdx] = animations[i];
-      setTimeout(() => {
-        let temp = arrayBars[barOneIdx].style.height;
-        arrayBars[barOneIdx].style.height = arrayBars[barTwoIdx].style.height;
-        arrayBars[barTwoIdx].style.height = temp;
-      }, i * 100);
-    }
+  const handleInsertionSort = () => {
+    console.log(selectionSort(array) === array.sort((a, b) => {return a-b}))
+    console.log(currentAlgorithm)
   };
+
   const handleQuickSort = () => {
     return;
-  };
+  };   
 
   return (
     <>
@@ -130,10 +124,10 @@ export default function SortingVisualizer() {
         </button>
         <button
           className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow hover:bg-blue-700"
-          value="Selection Sort"
+          value="Insertion Sort"
           onClick={(event) => handleAlgorithm(event.target.value)}
         >
-          Selection Sort
+          Insertion Sort
         </button>
         <button
           className="h-10 px-5 m-2 text-blue-100 transition-colors duration-150 bg-blue-600 rounded-lg focus:shadow hover:bg-blue-700"
@@ -161,7 +155,7 @@ export default function SortingVisualizer() {
         )}
       </nav>
       <div className="absolute top-1/3 left-24">
-        <div ref={arrayBarsParentElement}>
+        <div ref={arrayBarsParentElementRef}>
           {array.map((val, index) => {
             return (
               <div
