@@ -1,9 +1,9 @@
-export default function mergeSort(array) {
+export default function mergeSort(array, arrayBars) {
   const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
   mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
-  return animations;
+  animateMergeSort(animations, arrayBars)
 }
 
 function mergeSortHelper(
@@ -73,5 +73,27 @@ function doMerge(
     // value at index j in the auxiliary array.
     animations.push([k, auxiliaryArray[j]]);
     mainArray[k++] = auxiliaryArray[j++];
+  }
+}
+
+function animateMergeSort(animations, arrayBars) {
+  for (let i = 0; i < animations.length; i++) {
+    const isColorChange = i % 3 !== 2;
+    if (isColorChange) {
+      const [barOneIdx, barTwoIdx] = animations[i];
+      const color = i % 3 === 0 ? "bg-red-800" : "bg-green-800";
+      let barOne = arrayBars[barOneIdx];
+      let barTwo = arrayBars[barTwoIdx];
+      setTimeout(() => {
+        barOne.className = `w-1 inline-block mt-0 mr-1 ${color}`;
+        barTwo.className = `w-1 inline-block mt-0 mr-1 ${color}`;
+      }, i * 3);
+    } else {
+      setTimeout(() => {
+        const [barOneIdx, newHeight] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        barOneStyle.height = `${newHeight}px`;
+      }, i * 3);
+    }
   }
 }

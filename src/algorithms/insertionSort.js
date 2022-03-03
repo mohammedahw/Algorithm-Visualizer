@@ -9,5 +9,5 @@ export default function insertionSort(array) {
     }
     array[j + 1] = current;
   }
-  return animations;
+  return array
 }

@@ -4,7 +4,7 @@ import Page  from "../components/Page";
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center mx-auto my-20 items-center text-center font-bold">
+      <div className="flex justify-center items-center h-screen text-center font-bold">
         <div className="px-8">
           <Page
             name={"Sorting Visualizer"}
