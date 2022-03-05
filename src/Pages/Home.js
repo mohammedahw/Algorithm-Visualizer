@@ -4,19 +4,19 @@ import Page  from "../components/Page";
 export default function Home() {
   return (
     <>
-      <div className="flex justify-center items-center h-screen text-center font-bold">
+      <div className="flex justify-center items-center text-center h-96 font-bold">
         <div className="px-8">
           <Page
             name={"Sorting Visualizer"}
             url={"sorting-visualizer"}
-            img="https://icons-for-free.com/iconfiles/png/512/sort-131964785002424964.png"
+            img="https://i.ibb.co/Nn7JxGQ/Screenshot-1.png"
           />
         </div>
         <div className="px-8">
           <Page
             name={"Path Finding Visualizer"}
             url={"pathfinding-visualizer"}
-            img="https://static.thenounproject.com/png/3541888-200.png"
+            img="https://tamimehsan.github.io/AlgorithmVisualizer/static/media/graph.6e6849d5.png"
           />
         </div>
       </div>

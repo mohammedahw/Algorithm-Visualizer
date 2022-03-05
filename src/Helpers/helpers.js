@@ -3,9 +3,9 @@ export const getArrayLength = () => {
 }
 
 export const sleep = (time) => {
-    return new Promise((resolve) => {
+    return new Promise((callback) => {
         setTimeout(() => {
-            resolve()
+            callback()
         }, time)
     })
 }
