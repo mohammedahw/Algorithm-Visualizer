@@ -1,9 +1,11 @@
-export default function mergeSort(array, arrayBars) {
+import { sleep } from "../Helpers/helpers";
+
+export default async function mergeSort(array, arrayBars) {
   const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
   mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
-  animateMergeSort(animations, arrayBars)
+  await animateMergeSort(animations, arrayBars)
 }
 
 function mergeSortHelper(
@@ -76,7 +78,7 @@ function doMerge(
   }
 }
 
-function animateMergeSort(animations, arrayBars) {
+async function animateMergeSort(animations, arrayBars) {
   for (let i = 0; i < animations.length; i++) {
     const isColorChange = i % 3 !== 2;
     if (isColorChange) {
@@ -84,16 +86,16 @@ function animateMergeSort(animations, arrayBars) {
       const color = i % 3 === 0 ? "bg-red-800" : "bg-green-800";
       let barOne = arrayBars[barOneIdx];
       let barTwo = arrayBars[barTwoIdx];
-      setTimeout(() => {
+      await sleep(1).then(() => {
         barOne.className = `w-1 inline-block mt-0 mr-1 ${color}`;
         barTwo.className = `w-1 inline-block mt-0 mr-1 ${color}`;
-      }, i * 3);
+      })
     } else {
-      setTimeout(() => {
+      await sleep(1).then(() => {
         const [barOneIdx, newHeight] = animations[i];
         const barOneStyle = arrayBars[barOneIdx].style;
         barOneStyle.height = `${newHeight}px`;
-      }, i * 3);
+      })
     }
   }
 }

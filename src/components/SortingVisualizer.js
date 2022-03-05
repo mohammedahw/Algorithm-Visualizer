@@ -18,6 +18,7 @@ export default function SortingVisualizer() {
   const [array, setArray] = useState(arr);
   const [currentAlgorithm, setCurrentAlgorithm] = useState("");
   const arrayBarsParentElementRef = useRef(null);
+  const buttonsRef = useRef(null)
 
   const generateNewArray = () => {
     const SCREENWIDTH = getArrayLength()
@@ -33,6 +34,7 @@ export default function SortingVisualizer() {
     }
   };
 
+
   useEffect(()=> {
     window.addEventListener("resize", generateNewArray)
   }, [])
@@ -41,29 +43,40 @@ export default function SortingVisualizer() {
     setCurrentAlgorithm(event);
   };
 
-  const handleStart = () => {
+  const handleStart = async() => {
+    for (let i = 0; i < buttonsRef.current.children.length; i++) {
+      buttonsRef.current.children[i].disabled = true
+    }
     const arrayBars = arrayBarsParentElementRef.current.children
     switch (currentAlgorithm) {
       case "Bubble Sort":
-        bubbleSort(array, arrayBars);
+        await bubbleSort(array, arrayBars);
         break;
       case "Insertion Sort":
-        insertionSort(array, arrayBars)
+        await insertionSort(array, arrayBars)
         break;
       case "Merge Sort":
-        mergeSort(array, arrayBars);
+        await mergeSort(array, arrayBars);
         break;
       case "Quick Sort":
-        quickSort(array, arrayBars)
+        await quickSort(array, arrayBars)
         break;
       default:
         return;
+    }
+    for (let i = 0; i < buttonsRef.current.children.length; i++) {
+      buttonsRef.current.children[i].disabled = false
+    }
+
+    for (let i = 0; i < arrayBarsParentElementRef.current.children.length; i++) {
+      arrayBarsParentElementRef.current.children[i].className =
+        "w-1 inline-block mt-0 mr-1 bg-purple-800";
     }
   };
 
   return (
     <>
-      <nav className="bg-gray-700 py-1">
+      <nav className="bg-gray-700 py-1" ref={buttonsRef}>
         <button
           onClick={generateNewArray}
           className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow hover:bg-red-800"

@@ -1,4 +1,6 @@
-export default function quickSort(array, arrayBars) {
+import { sleep } from "../Helpers/helpers";
+
+export default async function quickSort(array, arrayBars) {
     let swaps = []
     let stack = [];
     stack.push(0);
@@ -17,7 +19,7 @@ export default function quickSort(array, arrayBars) {
             stack.push(end);
         }
     }
-    animateQuickSort(arrayBars, swaps)
+    await animateQuickSort(arrayBars, swaps)
 }
 
 function partition(array, start, end) {
@@ -40,15 +42,15 @@ function partition(array, start, end) {
     return { pivotIndex, animations };
 }
 
-function animateQuickSort(arrayBars, animations) {
+async function animateQuickSort(arrayBars, animations) {
     for (let i = 0; i < animations.length; i++) {
-        setTimeout(() => {
-            const [barOne, barTwo] = animations[i]
+        const [barOne, barTwo] = animations[i]
+        await sleep(28).then(() => {
             let temp = arrayBars[barOne].style.height
             arrayBars[barOne].style.height = arrayBars[barTwo].style.height 
             arrayBars[barTwo].style.height = temp
-            arrayBars[barOne].className = "w-1 inline-block mt-0 mr-1 bg-green-800";
-            arrayBars[barTwo].className = "w-1 inline-block mt-0 mr-1 bg-green-800";
-        }, i * 30)
+        })
+        arrayBars[barOne].className = "w-1 inline-block mt-0 mr-1 bg-green-800";
+        arrayBars[barTwo].className = "w-1 inline-block mt-0 mr-1 bg-green-800";
     }
 }
