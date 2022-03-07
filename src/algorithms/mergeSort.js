@@ -5,7 +5,7 @@ export default async function mergeSort(array, arrayBars) {
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
   mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
-  await animateMergeSort(animations, arrayBars)
+  await animateMergeSort(animations, arrayBars);
 }
 
 function mergeSortHelper(
@@ -89,13 +89,13 @@ async function animateMergeSort(animations, arrayBars) {
       await sleep(1).then(() => {
         barOne.className = `w-1 inline-block mt-0 mr-1 ${color}`;
         barTwo.className = `w-1 inline-block mt-0 mr-1 ${color}`;
-      })
+      });
     } else {
       await sleep(1).then(() => {
         const [barOneIdx, newHeight] = animations[i];
         const barOneStyle = arrayBars[barOneIdx].style;
         barOneStyle.height = `${newHeight}px`;
-      })
+      });
     }
   }
 }

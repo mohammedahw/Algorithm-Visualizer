@@ -1,5 +1,5 @@
 import React from "react";
-import Page  from "../components/Page";
+import Page from "../components/Page";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
         </div>
         <div className="px-8">
           <Page
-            name={"Path Finding Visualizer"}
+            name={"Pathfinding Visualizer"}
             url={"pathfinding-visualizer"}
             img="https://tamimehsan.github.io/AlgorithmVisualizer/static/media/graph.6e6849d5.png"
           />
@@ -22,4 +22,4 @@ export default function Home() {
       </div>
     </>
   );
-};
+}

@@ -1,8 +1,8 @@
 import { React, useState, useRef, useEffect } from "react";
-import bubbleSort  from "../algorithms/bubbleSort";
-import mergeSort  from "../algorithms/mergeSort";
+import bubbleSort from "../algorithms/bubbleSort";
+import mergeSort from "../algorithms/mergeSort";
 import insertionSort from "../algorithms/insertionSort";
-import { getArrayLength } from "../Helpers/helpers";
+import { getScreenWidth } from "../Helpers/helpers";
 import quickSort from "../algorithms/quickSort";
 
 const generateRandomNumber = (min, max) => {
@@ -10,7 +10,7 @@ const generateRandomNumber = (min, max) => {
 };
 
 const arr = [];
-for (let i = 0; i < getArrayLength(); i++) {
+for (let i = 0; i < getScreenWidth(); i++) {
   arr.push(generateRandomNumber(5, 550));
 }
 
@@ -18,57 +18,64 @@ export default function SortingVisualizer() {
   const [array, setArray] = useState(arr);
   const [currentAlgorithm, setCurrentAlgorithm] = useState("");
   const arrayBarsParentElementRef = useRef(null);
-  const buttonsRef = useRef(null)
+  const buttonsRef = useRef(null);
 
   const generateNewArray = () => {
-    const SCREENWIDTH = getArrayLength()
+    const SCREENWIDTH = getScreenWidth();
     const newArr = [];
     for (let i = 0; i < SCREENWIDTH; i++) {
       newArr.push(generateRandomNumber(5, 550));
     }
     setArray(newArr);
     setCurrentAlgorithm("");
-    for (let i = 0; i < arrayBarsParentElementRef.current.children.length; i++) {
+    for (
+      let i = 0;
+      i < arrayBarsParentElementRef.current.children.length;
+      i++
+    ) {
       arrayBarsParentElementRef.current.children[i].className =
         "w-1 inline-block mt-0 mr-1 bg-blue-800";
     }
   };
 
-
-  useEffect(()=> {
-    window.addEventListener("resize", generateNewArray)
-  }, [])
+  useEffect(() => {
+    window.addEventListener("resize", generateNewArray);
+  }, []);
 
   const handleAlgorithm = (event) => {
     setCurrentAlgorithm(event);
   };
 
-  const handleStart = async() => {
+  const handleStart = async () => {
     for (let i = 0; i < buttonsRef.current.children.length; i++) {
-      buttonsRef.current.children[i].disabled = true
+      buttonsRef.current.children[i].disabled = true;
     }
-    const arrayBars = arrayBarsParentElementRef.current.children
+    const arrayBars = arrayBarsParentElementRef.current.children;
     switch (currentAlgorithm) {
       case "Bubble Sort":
         await bubbleSort(array, arrayBars);
         break;
       case "Insertion Sort":
-        await insertionSort(array, arrayBars)
+        await insertionSort(array, arrayBars);
         break;
       case "Merge Sort":
         await mergeSort(array, arrayBars);
         break;
       case "Quick Sort":
-        await quickSort(array, arrayBars)
+        await quickSort(array, arrayBars);
         break;
       default:
         return;
     }
     for (let i = 0; i < buttonsRef.current.children.length; i++) {
-      buttonsRef.current.children[i].disabled = false
+      buttonsRef.current.children[i].disabled = false;
     }
 
-    for (let i = 0; i < arrayBarsParentElementRef.current.children.length; i++) {
+    for (
+      let i = 0;
+      i < arrayBarsParentElementRef.current.children.length;
+      i++
+    ) {
       arrayBarsParentElementRef.current.children[i].className =
         "w-1 inline-block mt-0 mr-1 bg-purple-800";
     }
@@ -137,6 +144,4 @@ export default function SortingVisualizer() {
       </div>
     </>
   );
-};
-
-
+}
