@@ -9,14 +9,14 @@ export default function Home() {
           <Page
             name={"Sorting Visualizer"}
             url={"sorting-visualizer"}
-            img="https://i.ibb.co/Nn7JxGQ/Screenshot-1.png"
+            img="http://www.scriptspot.com/files/sortvis.png"
           />
         </div>
         <div className="px-16">
           <Page
             name={"Pathfinding Visualizer"}
             url={"pathfinding-visualizer"}
-            img="https://tamimehsan.github.io/AlgorithmVisualizer/static/media/graph.6e6849d5.png"
+            img="https://raw.githubusercontent.com/antonpantev/pathfinding/master/PreviewImages/ScreenShot.png"
           />
         </div>
       </div>
