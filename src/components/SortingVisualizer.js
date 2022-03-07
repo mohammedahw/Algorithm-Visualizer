@@ -40,6 +40,7 @@ export default function SortingVisualizer() {
 
   useEffect(() => {
     window.addEventListener("resize", generateNewArray);
+    return () => window.removeEventListener("resize", generateNewArray);
   }, []);
 
   const handleAlgorithm = (event) => {

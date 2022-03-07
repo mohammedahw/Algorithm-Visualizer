@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <>
       <div className="flex justify-center items-center text-center h-96 font-bold">
-        <div className="px-8">
+        <div className="px-16">
           <Page
             name={"Sorting Visualizer"}
             url={"sorting-visualizer"}
             img="https://i.ibb.co/Nn7JxGQ/Screenshot-1.png"
           />
         </div>
-        <div className="px-8">
+        <div className="px-16">
           <Page
             name={"Pathfinding Visualizer"}
             url={"pathfinding-visualizer"}
