@@ -11,7 +11,7 @@ const generateRandomNumber = (min, max) => {
 
 const arr = [];
 for (let i = 0; i < getScreenWidth(); i++) {
-  arr.push(generateRandomNumber(5, 550));
+  arr.push(generateRandomNumber(5, 500));
 }
 
 export default function SortingVisualizer() {
@@ -24,7 +24,7 @@ export default function SortingVisualizer() {
     const SCREENWIDTH = getScreenWidth();
     const newArr = [];
     for (let i = 0; i < SCREENWIDTH; i++) {
-      newArr.push(generateRandomNumber(5, 550));
+      newArr.push(generateRandomNumber(5, 500));
     }
     setArray(newArr);
     setCurrentAlgorithm("");
@@ -84,7 +84,7 @@ export default function SortingVisualizer() {
 
   return (
     <>
-      <nav className="bg-gray-700 py-1" ref={buttonsRef}>
+      <nav className="bg-gray-700" ref={buttonsRef}>
         <button
           onClick={generateNewArray}
           className="h-10 px-5 m-2 text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow hover:bg-red-800"
@@ -130,7 +130,7 @@ export default function SortingVisualizer() {
           </button>
         )}
       </nav>
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center py-10">
         <div ref={arrayBarsParentElementRef}>
           {array.map((val, index) => {
             return (

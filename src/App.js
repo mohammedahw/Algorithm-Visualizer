@@ -1,22 +1,13 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import  Home  from "./Pages/Home";
-import  Navbar  from "./components/Navbar";
-import  Sorting  from "./Pages/Sorting";
-import  Pathfinding  from "./Pages/Pathfinding";
+import SortingVisualizer from "./components/SortingVisualizer";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/sorting-visualizer" element={<Sorting />} />
-          <Route exact path="/pathfinding-visualizer" element={<Pathfinding />} />
-        </Routes>
-      </div>
-    </Router>
+    <>
+      <Navbar />
+      <SortingVisualizer />
+    </>
   );
 }
 export default App;
