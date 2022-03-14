@@ -130,7 +130,7 @@ export default function SortingVisualizer() {
           </button>
         )}
       </nav>
-      <div className="flex justify-center items-center py-10">
+      <div className="flex justify-center items-center min-h-screen pb-12">
         <div ref={arrayBarsParentElementRef}>
           {array.map((val, index) => {
             return (
