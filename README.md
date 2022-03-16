@@ -1,1 +1,1 @@
-Visualization tool for various sortingalgorithms
+Visualization tool for various sorting algorithms
